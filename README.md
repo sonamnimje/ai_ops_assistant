@@ -30,8 +30,6 @@ GITHUB_TOKEN=ghp_your_token                      # optional
 ## Run
 Execute from the repo root:
 ```bash
-python -m ai_ops_assistant.main --task "find top python data viz repos"
-python -m ai_ops_assistant.main --task "weather in Paris" --location "Paris" --units metric
 python -m ai_ops_assistant.main --task "analyze repo" --location "London" --units imperial
 ```
 Flags:
