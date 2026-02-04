@@ -1,195 +1,206 @@
 # AI Operations Assistant
 
-A **CLI-based multi-agent AI Operations Assistant** that converts natural language tasks into executable plans, calls real third-party APIs (GitHub + OpenWeather), and verifies results using an LLM.
-
-The system demonstrates **agent-based reasoning**, **tool orchestration**, and **real API integration**, all running locally.
-
----
+Local multi-agent assistant that plans tasks, executes real API calls (GitHub + OpenWeather), and verifies results using an LLM.
 
 ## Features
+- Planner → Executor → Verifier pipeline
+- Real GitHub REST and OpenWeather API calls via `requests`
+- LLM used only for reasoning (planning + verification)
+- CLI runnable in VS Code terminal
+- Environment-based configuration with `.env`
 
-- Multi-agent architecture: **Planner → Executor → Verifier**
-- LLM-powered planning and verification (no monolithic prompts)
-- Real GitHub REST API integration
-- Real OpenWeather API integration
-- Fully **CLI-based** (no localhost server)
-- Environment-based configuration using `.env`
-- Runs locally in VS Code / terminal
+## Quickstart
+1. Python 3.10+.
+2. Create env file:
+   ```bash
+   # AI Operations Assistant
+   A **CLI-based multi-agent AI Operations Assistant** that converts natural language tasks into executable plans, calls real third-party APIs (GitHub + OpenWeather), and verifies results using an LLM.
 
----
+   The system demonstrates **agent-based reasoning**, **tool orchestration**, and **real API integration**, all running locally.
 
-## Tech Stack
+   ---
 
-- Python 3.10+
-- OpenAI-compatible LLM
-- GitHub REST API
-- OpenWeather API
-- `requests`, `python-dotenv`
+   ## Features
 
----
+   - Multi-agent architecture: **Planner → Executor → Verifier**
+   - LLM-powered planning and verification (no monolithic prompts)
+   - Real GitHub REST API integration
+   - Real OpenWeather API integration
+   - Fully **CLI-based** (no localhost server)
+   - Environment-based configuration using `.env`
+   - Runs locally in VS Code / terminal
 
-## Project Structure
+   ---
 
+   ## Tech Stack
 
+   - Python 3.10+
+   - OpenAI-compatible LLM
+   - GitHub REST API
+   - OpenWeather API
+   - `requests`, `python-dotenv`
 
-ai_ops_assistant/
-├── agents/
-│ ├── planner.py
-│ ├── executor.py
-│ └── verifier.py
-├── tools/
-│ ├── github_tool.py
-│ └── weather_tool.py
-├── llm/
-│ └── llm_client.py
-├── main.py
-├── requirements.txt
-├── .env.example
-└── README.md
+   ---
 
+   ## Project Structure
 
----
+   ai_ops_assistant/
+   ├── agents/
+   │ ├── planner.py
+   │ ├── executor.py
+   │ └── verifier.py
+   ├── tools/
+   │ ├── github_tool.py
+   │ └── weather_tool.py
+   ├── llm/
+   │ └── llm_client.py
+   ├── main.py
+   ├── requirements.txt
+   ├── .env.example
+   └── README.md
 
-## Setup Instructions
+   ---
 
-### 1. Prerequisites
-- Python **3.10 or higher**
-- VS Code or any terminal
+   ## Setup Instructions
 
----
+   ### 1. Prerequisites
+   - Python **3.10 or higher**
+   - VS Code or any terminal
 
-### 2. Create virtual environment
+   ---
 
-```bash
-python -m venv .venv
-```
+   ### 2. Create virtual environment
 
+   ```bash
+   python -m venv .venv
+   ```
 
-Activate:
 
-Windows (PowerShell)
+   Activate:
 
-```
-.venv\Scripts\Activate.ps1
-```
+   Windows (PowerShell)
 
+   ```
+   .venv\Scripts\Activate.ps1
+   ```
 
-macOS / Linux
 
-```
-source .venv/bin/activate
-```
+   macOS / Linux
 
-3. Configure environment variables
-cp .env.example .env
+   ```
+   source .venv/bin/activate
+   ```
 
+   3. Configure environment variables
+   cp .env.example .env
 
-Fill in .env:
 
-```
-OPENAI_API_KEY=sk-your-key
-OPENAI_MODEL=gpt-4o-mini
+   Fill in .env:
 
-# Optional
-# OPENAI_BASE_URL=https://api.yourprovider.com/v1
-# GITHUB_TOKEN=ghp_your_token
+   ```
+   OPENAI_API_KEY=sk-your-key
+   OPENAI_MODEL=gpt-4o-mini
 
-OPENWEATHER_API_KEY=your_openweather_key
-```
+   # Optional
+   # OPENAI_BASE_URL=https://api.yourprovider.com/v1
+   # GITHUB_TOKEN=ghp_your_token
 
-4. Install dependencies
-```
-pip install -r requirements.txt
-```
+   OPENWEATHER_API_KEY=your_openweather_key
+   ```
 
-Running the Application (CLI)
+   4. Install dependencies
+   ```
+   pip install -r requirements.txt
+   ```
 
-⚠️ This project runs entirely as a CLI application.
-There is no localhost server or HTTP endpoint.
+   Running the Application (CLI)
 
-Navigate to the project directory:
+   ⚠️ This project runs entirely as a CLI application.
+   There is no localhost server or HTTP endpoint.
 
-```
-cd ai_ops_assistant
-```
+   Navigate to the project directory:
 
+   ```
+   cd ai_ops_assistant
+   ```
 
-Run with a task:
 
-```
-python main.py \
-  --task "Find top 3 Python GitHub repositories and show current weather in Mumbai" \
-  --location "Mumbai" \
-  --units metric
-```
+   Run with a task:
 
-Sample Task
-Find top 3 Python GitHub repositories and show current weather in Mumbai
+   ```
+   python main.py \
+     --task "Find top 3 Python GitHub repositories and show current weather in Mumbai" \
+     --location "Mumbai" \
+     --units metric
+   ```
 
-What Happens Internally
+   Sample Task
+   Find top 3 Python GitHub repositories and show current weather in Mumbai
 
-Planner Agent
+   What Happens Internally
 
-Uses an LLM to convert the user request into a strict JSON execution plan
+   Planner Agent
 
-Selects appropriate tools (GitHub search, Weather lookup)
+   Uses an LLM to convert the user request into a strict JSON execution plan
 
-Executor Agent
+   Selects appropriate tools (GitHub search, Weather lookup)
 
-Executes each step
+   Executor Agent
 
-Calls real GitHub and OpenWeather APIs
+   Executes each step
 
-Verifier Agent
+   Calls real GitHub and OpenWeather APIs
 
-Validates completeness
+   Verifier Agent
 
-Handles partial failures
+   Validates completeness
 
-Formats the final response
+   Handles partial failures
 
-Final Output
+   Formats the final response
 
-Printed directly to the terminal
+   Final Output
 
-Expected Output
+   Printed directly to the terminal
 
-Generated JSON execution plan
+   Expected Output
 
-Live GitHub repository data
+   Generated JSON execution plan
 
-Real-time weather data
+   Live GitHub repository data
 
-Verified and structured final summary
+   Real-time weather data
 
-Troubleshooting
+   Verified and structured final summary
 
-Module not found → Ensure virtual environment is activated
+   Troubleshooting
 
-Invalid API key → Recheck .env
+   Module not found → Ensure virtual environment is activated
 
-Weather not found → Ensure city name is valid
+   Invalid API key → Recheck .env
 
-GitHub rate limit error → Add GITHUB_TOKEN to .env
+   Weather not found → Ensure city name is valid
 
-Notes
+   GitHub rate limit error → Add GITHUB_TOKEN to .env
 
-GitHub token is optional but recommended to avoid rate limits
+   Notes
 
-OpenWeather API key is required for weather lookups
+   GitHub token is optional but recommended to avoid rate limits
 
-Lightweight retries and graceful fallbacks are implemented
+   OpenWeather API key is required for weather lookups
 
-Designed intentionally as CLI-first per assignment requirements
+   Lightweight retries and graceful fallbacks are implemented
 
-Optional Enhancements (Future Work)
+   Designed intentionally as CLI-first per assignment requirements
 
-FastAPI wrapper for HTTP endpoint
+   Optional Enhancements (Future Work)
 
-Parallel tool execution
+   FastAPI wrapper for HTTP endpoint
 
-Response caching
+   Parallel tool execution
 
-Cost tracking per LLM request
+   Response caching
 
-Streamlit-based UI
+   Cost tracking per LLM request
+
+   Streamlit-based UI
